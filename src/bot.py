@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
+import asyncio
 import configparser
 import discord
 from discord.ext import commands
 import logging
 import os
+import signal
 
 from cogs.functions import Functions
 from cogs.variety import Variety
@@ -46,6 +48,14 @@ intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
 bot = Bot(command_prefix="!", intents=intents)
+
+# Handle SIGTERM
+def sigterm(signum, frame):
+	# Always "SIGTERM" but eh
+	signame = signal.Signals(signum).name
+	warning(f"Caught {signame}, calling bot.close()")
+	asyncio.create_task(bot.close(shutdown=False))
+signal.signal(signal.SIGTERM, sigterm)
 
 # Load our configuration
 config = configparser.ConfigParser()
