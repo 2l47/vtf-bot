@@ -161,7 +161,10 @@ async def log_message(message):
 	# Log the message and its attachments to stdout
 	formatted, attachments = None, ""
 	if type(channel) == discord.DMChannel:
-		formatted = f"[DM with {channel.recipient.name}] {author.name}: {msg}\n"
+		recipient = "Unknown recipient"
+		if channel.recipient:
+			recipient = channel.recipient.name
+		formatted = f"[DM with {recipient}] {author.name}: {msg}\n"
 	else:
 		formatted = f"[{guild.name}] #{channel.name}: {author}/{author.display_name}: {msg}\n"
 	for index, item in enumerate(message.attachments):

@@ -9,4 +9,7 @@ with open("./state/loop.pid", "r") as f:
 
 print(f"Sending SIGTERM to loop PID {loop_pid}")
 os.kill(loop_pid, signal.SIGTERM)
-os.remove("loop.pid")
+try:
+	os.remove("loop.pid")
+except FileNotFoundError:
+	pass
