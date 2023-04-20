@@ -173,9 +173,11 @@ async def log_message(message):
 
 	# Log user DMs for debugging
 	if type(channel) == discord.DMChannel:
-		# Only log if the DM isn't with the bot owner
-		if channel.recipient.id != bot.owner.id:
-			await bot.logging_channel.send(formatted + attachments)
+		# channel.recipient is None for ephemeral messages
+		if channel.recipient is not None:
+			# Only log if the DM isn't with the bot owner
+			if channel.recipient.id != bot.owner.id:
+				await bot.logging_channel.send(formatted + attachments)
 
 
 @bot.event
